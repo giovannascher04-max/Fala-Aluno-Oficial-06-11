@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Área do administrador – Fala, Aluno!</title>
+  <meta name="robots" content="noindex">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Figtree:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <main class="admin">
+    <p><a href="index.html">← Voltar ao site</a></p>
+
+    <h1>Área do administrador</h1>
+    <p class="alerta" id="alerta-sem-config" hidden>O Firebase ainda não foi configurado no arquivo <strong>config.js</strong>. Veja o passo 1 do guia.</p>
+
+    <!-- TELA 1: login (aparece quando ninguém entrou) -->
+    <section id="tela-login" hidden>
+      <p class="intro">Entre com o e-mail e a senha de administrador para atualizar o mural de avisos e as aulas complementares.</p>
+      <form id="form-login" class="formulario">
+        <label>E-mail <input type="email" id="login-email" required autocomplete="username"></label>
+        <label>Senha <input type="password" id="login-senha" required autocomplete="current-password"></label>
+        <button class="botao" type="submit">Entrar</button>
+        <p class="erro" id="login-erro" role="alert"></p>
+      </form>
+    </section>
+
+    <!-- TELA 2: painel (aparece depois do login) -->
+    <section id="tela-painel" hidden>
+      <p>Logado como <strong id="quem"></strong> <button class="botao botao-contorno botao-pequeno" id="botao-sair" type="button">Sair</button></p>
+      <p class="erro" id="painel-erro" role="alert"></p>
+
+      <h2>Avisos</h2>
+      <form id="form-avisos" class="formulario">
+        <label>Categoria
+          <select name="categoria">
+            <option>Provas</option><option>Eventos</option><option>Geral</option><option>Técnico</option>
+          </select>
+        </label>
+        <label>Título <input name="titulo" required></label>
+        <label>Texto <textarea name="texto"></textarea></label>
+        <label>Data (texto livre, como “12/11” ou “Todos os dias”) <input name="data"></label>
+        <button class="botao" type="submit">Salvar aviso</button>
+        <button class="botao botao-contorno" type="button" data-cancelar="avisos" hidden>Cancelar edição</button>
+      </form>
+      <ul class="lista-admin" id="lista-admin-avisos"></ul>
+
+      <h2>Aulas complementares</h2>
+      <form id="form-aulas" class="formulario">
+        <label>Dia
+          <select name="dia">
+            <option>Segunda</option><option>Terça</option><option>Quarta</option><option>Quinta</option><option>Sexta</option>
+          </select>
+        </label>
+        <label>Hora (por exemplo, 13h30) <input name="hora"></label>
+        <label>Título <input name="titulo" required></label>
+        <label>Descrição <textarea name="descricao"></textarea></label>
+        <label>Local <input name="local"></label>
+        <button class="botao" type="submit">Salvar aula</button>
+        <button class="botao botao-contorno" type="button" data-cancelar="aulas" hidden>Cancelar edição</button>
+      </form>
+      <ul class="lista-admin" id="lista-admin-aulas"></ul>
+
+      <h2>Como usar</h2>
+      <ul class="passos">
+        <li><strong>Adicionar:</strong> preencha o formulário e clique em Salvar. O item aparece no site na hora.</li>
+        <li><strong>Mudar:</strong> clique em Editar, altere os campos e salve.</li>
+        <li><strong>Tirar do site sem apagar:</strong> clique em Esconder. Para voltar, clique em Mostrar.</li>
+        <li><strong>Apagar de vez:</strong> clique em Apagar e confirme.</li>
+      </ul>
+    </section>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="config.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
