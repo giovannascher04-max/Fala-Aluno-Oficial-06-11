@@ -3,22 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Fala Aluno – Escola Estadual Apparecida Rahal</title>
+  <title>Fala, Aluno! – Escola Estadual Apparecida Rahal</title>
   <meta name="description" content="Site dos estudantes da Escola Estadual Apparecida Rahal: ensino médio integrado ao técnico, mural de avisos, aulas complementares e sugestões.">
 
-  <!-- Fontes do Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Figtree:wght@400;700&display=swap" rel="stylesheet">
 
-  <!-- O visual do site fica no arquivo style.css -->
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body id="topo">
   <a class="pular" href="#curso">Ir para o conteúdo</a>
 
-  <!-- ================= CABEÇALHO ================= -->
   <header>
     <div class="cabecalho">
       <a class="logo" href="#topo" aria-label="Fala Aluno, voltar ao início">
@@ -28,7 +25,7 @@
           <circle fill="#ffffff" cx="16" cy="13.5" r="2"/>
           <circle fill="#ffffff" cx="22" cy="13.5" r="2"/>
         </svg>
-        Fala Aluno
+        Fala, Aluno!
       </a>
       <nav aria-label="Seções do site">
         <a href="#curso">O curso</a>
@@ -41,11 +38,10 @@
 
   <main>
 
-    <!-- ================= INÍCIO ================= -->
     <section class="inicio" aria-labelledby="titulo-inicio">
       <div class="conteudo">
         <div>
-          <h1 id="titulo-inicio">Fala Aluno</h1>
+          <h1 id="titulo-inicio">Fala, Aluno!</h1>
           <p class="intro">O espaço da Escola Estadual Apparecida Rahal para você se informar, estudar mais e dar a sua opinião.</p>
           <div class="botoes">
             <a class="botao" href="#mural">Ver o mural de avisos</a>
@@ -53,7 +49,6 @@
           </div>
         </div>
 
-        <!-- Cada balão leva para uma parte do site -->
         <div class="conversa">
           <a class="bolha esquerda" href="#curso">O que é o ensino médio integrado ao técnico?</a>
           <a class="bolha direita" href="#mural">Quais são os avisos da semana?</a>
@@ -63,7 +58,6 @@
       </div>
     </section>
 
-    <!-- ================= O CURSO ================= -->
     <section id="curso" aria-labelledby="titulo-curso">
       <div class="conteudo">
         <h2 id="titulo-curso">Ensino médio e técnico em Desenvolvimento de Sistemas, juntos</h2>
@@ -139,26 +133,22 @@
       </div>
     </section>
 
-    <!-- ================= MURAL DE AVISOS ================= -->
     <section class="secao-branca" id="mural" aria-labelledby="titulo-mural">
       <div class="conteudo">
         <h2 id="titulo-mural">Mural de avisos</h2>
         <p class="intro">Recados da escola e das turmas. Volte sempre: os avisos mudam.</p>
 
-        <!-- O arquivo script.js coloca os avisos aqui dentro -->
         <div class="mural" id="lista-avisos">
           <p class="vazio">Carregando avisos...</p>
         </div>
       </div>
     </section>
 
-    <!-- ================= AULAS COMPLEMENTARES ================= -->
     <section id="aulas" aria-labelledby="titulo-aulas">
       <div class="conteudo">
         <h2 id="titulo-aulas">Aulas complementares</h2>
         <p class="intro">Encontros extras para reforçar o que você viu em sala, tirar dúvidas e treinar.</p>
 
-        <!-- O arquivo script.js coloca as aulas aqui dentro -->
         <ul class="agenda" id="lista-aulas">
           <li><p class="vazio">Carregando aulas...</p></li>
         </ul>
@@ -167,7 +157,6 @@
       </div>
     </section>
 
-    <!-- ================= SUGESTÕES ================= -->
     <section class="secao-branca" id="sugestoes" aria-labelledby="titulo-sugestoes">
       <div class="conteudo sugestoes-grade">
         <div>
@@ -216,7 +205,6 @@
             <button class="botao" type="submit">Preparar sugestão</button>
             <p class="ajuda">Sua sugestão só é enviada quando você apertar em “Enviar por e-mail”.</p>
 
-            <!-- Esta parte só aparece depois de apertar em "Preparar sugestão" -->
             <div id="resultado" hidden>
               <h3 id="resultado-titulo" tabindex="-1">Sugestão preparada</h3>
               <p>Falta só um passo: envie pelo e-mail da escola ou copie o texto e entregue à coordenação.</p>
@@ -234,7 +222,6 @@
 
   </main>
 
-  <!-- ================= RODAPÉ ================= -->
   <footer>
     <div class="rodape">
       <div>
