@@ -2,26 +2,35 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Fala Aluno – Escola Estadual Apparecida Rahal</title>
+  <meta name="description" content="Site dos estudantes da Escola Estadual Apparecida Rahal: ensino médio integrado ao técnico, mural de avisos, aulas complementares e sugestões.">
+
+  <!-- Fontes do Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Figtree:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- O visual do site fica no arquivo style.css -->
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body id="topo">
   <a class="pular" href="#curso">Ir para o conteúdo</a>
 
-  <header class="topo">
-    <div class="topo-in">
-      <a class="marca" href="#topo" aria-label="Fala Aluno, voltar ao início">
+  <!-- ================= CABEÇALHO ================= -->
+  <header>
+    <div class="cabecalho">
+      <a class="logo" href="#topo" aria-label="Fala Aluno, voltar ao início">
         <svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true">
-          <path class="bolha-fundo" d="M6 3h20a4 4 0 0 1 4 4v13a4 4 0 0 1-4 4H14l-7 6v-6H6a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4z"/>
-          <circle class="bolha-ponto" cx="10" cy="13.5" r="2"/>
-          <circle class="bolha-ponto" cx="16" cy="13.5" r="2"/>
-          <circle class="bolha-ponto" cx="22" cy="13.5" r="2"/>
+          <path fill="#2b45f0" d="M6 3h20a4 4 0 0 1 4 4v13a4 4 0 0 1-4 4H14l-7 6v-6H6a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4z"/>
+          <circle fill="#ffffff" cx="10" cy="13.5" r="2"/>
+          <circle fill="#ffffff" cx="16" cy="13.5" r="2"/>
+          <circle fill="#ffffff" cx="22" cy="13.5" r="2"/>
         </svg>
         Fala Aluno
       </a>
-      <nav class="menu" aria-label="Seções do site">
+      <nav aria-label="Seções do site">
         <a href="#curso">O curso</a>
         <a href="#mural">Mural</a>
         <a href="#aulas">Aulas extras</a>
@@ -31,28 +40,31 @@
   </header>
 
   <main>
+
+    <!-- ================= INÍCIO ================= -->
     <section class="inicio" aria-labelledby="titulo-inicio">
-      <div class="conteudo inicio-grade">
+      <div class="conteudo">
         <div>
           <h1 id="titulo-inicio">Fala Aluno</h1>
           <p class="intro">O espaço da Escola Estadual Apparecida Rahal para você se informar, estudar mais e dar a sua opinião.</p>
-          <div class="inicio-botoes">
-            <a class="btn" href="#mural">Ver o mural de avisos</a>
-            <a class="btn btn-contorno" href="#sugestoes">Mandar uma sugestão</a>
+          <div class="botoes">
+            <a class="botao" href="#mural">Ver o mural de avisos</a>
+            <a class="botao botao-contorno" href="#sugestoes">Mandar uma sugestão</a>
           </div>
         </div>
 
+        <!-- Cada balão leva para uma parte do site -->
         <div class="conversa">
-          <a class="bolha bolha-esq" href="#curso">O que é o ensino médio integrado ao técnico?</a>
-          <a class="bolha bolha-dir" href="#mural">Quais são os avisos da semana?</a>
-          <a class="bolha bolha-esq" href="#aulas">Tem aula extra pra eu reforçar?</a>
-          <a class="bolha bolha-dir" href="#sugestoes">Tenho uma ideia de visita técnica!</a>
+          <a class="bolha esquerda" href="#curso">O que é o ensino médio integrado ao técnico?</a>
+          <a class="bolha direita" href="#mural">Quais são os avisos da semana?</a>
+          <a class="bolha esquerda" href="#aulas">Tem aula extra pra eu reforçar?</a>
+          <a class="bolha direita" href="#sugestoes">Tenho uma ideia de visita técnica!</a>
         </div>
       </div>
     </section>
 
     <!-- ================= O CURSO ================= -->
-    <section class="secao" id="curso" aria-labelledby="titulo-curso">
+    <section id="curso" aria-labelledby="titulo-curso">
       <div class="conteudo">
         <h2 id="titulo-curso">Ensino médio e técnico em Desenvolvimento de Sistemas, juntos</h2>
         <p class="intro">Aqui você faz duas formações ao mesmo tempo, na mesma escola: o ensino médio e o curso técnico em Desenvolvimento de Sistemas. É uma turma só, com uma rotina só, e as matérias conversam entre si.</p>
@@ -70,7 +82,7 @@
             </ul>
           </div>
 
-          <div class="operador" aria-hidden="true">+</div>
+          <div class="sinal" aria-hidden="true">+</div>
 
           <div class="bloco bloco-tecnico">
             <h3>Formação técnica</h3>
@@ -84,7 +96,7 @@
             </ul>
           </div>
 
-          <div class="operador" aria-hidden="true">=</div>
+          <div class="sinal" aria-hidden="true">=</div>
 
           <div class="bloco bloco-final">
             <h3>No final</h3>
@@ -127,25 +139,37 @@
       </div>
     </section>
 
-    <section class="secao secao-clara" id="mural" aria-labelledby="titulo-mural">
+    <!-- ================= MURAL DE AVISOS ================= -->
+    <section class="secao-branca" id="mural" aria-labelledby="titulo-mural">
       <div class="conteudo">
         <h2 id="titulo-mural">Mural de avisos</h2>
         <p class="intro">Recados da escola e das turmas. Volte sempre: os avisos mudam.</p>
-        <div class="mural" id="mural-lista"></div>
+
+        <!-- O arquivo script.js coloca os avisos aqui dentro -->
+        <div class="mural" id="lista-avisos">
+          <p class="vazio">Carregando avisos...</p>
+        </div>
       </div>
     </section>
 
-    <section class="secao" id="aulas" aria-labelledby="titulo-aulas">
+    <!-- ================= AULAS COMPLEMENTARES ================= -->
+    <section id="aulas" aria-labelledby="titulo-aulas">
       <div class="conteudo">
         <h2 id="titulo-aulas">Aulas complementares</h2>
         <p class="intro">Encontros extras para reforçar o que você viu em sala, tirar dúvidas e treinar.</p>
-        <ul class="agenda" id="aulas-lista"></ul>
+
+        <!-- O arquivo script.js coloca as aulas aqui dentro -->
+        <ul class="agenda" id="lista-aulas">
+          <li><p class="vazio">Carregando aulas...</p></li>
+        </ul>
+
         <p class="aulas-rodape">Para participar, fale com o(a) professor(a) da aula ou com a coordenação. Sentiu falta de algum tema? <a href="#sugestoes">Sugira uma aula</a>.</p>
       </div>
     </section>
 
-    <section class="secao secao-clara" id="sugestoes" aria-labelledby="titulo-sugestoes">
-      <div class="conteudo sug-grade">
+    <!-- ================= SUGESTÕES ================= -->
+    <section class="secao-branca" id="sugestoes" aria-labelledby="titulo-sugestoes">
+      <div class="conteudo sugestoes-grade">
         <div>
           <h2 id="titulo-sugestoes">Manda a sua ideia</h2>
           <p class="intro">A escola também é feita do que os estudantes propõem. Conta o que você gostaria de ler, visitar ou aprender.</p>
@@ -163,67 +187,68 @@
 
         <div>
           <form class="formulario" id="form-sugestao">
-            <fieldset>
-              <legend>O que você quer sugerir?</legend>
-              <div class="escolhas">
-                <label class="escolha"><input type="radio" name="tipo" value="Livro" checked><span>Livro</span></label>
-                <label class="escolha"><input type="radio" name="tipo" value="Passeio"><span>Passeio</span></label>
-                <label class="escolha"><input type="radio" name="tipo" value="Visita técnica"><span>Visita técnica</span></label>
-                <label class="escolha"><input type="radio" name="tipo" value="Aula ou palestra"><span>Aula ou palestra</span></label>
-                <label class="escolha"><input type="radio" name="tipo" value="Outro"><span>Outro</span></label>
-              </div>
-            </fieldset>
+            <label for="tipo">O que você quer sugerir?
+              <select id="tipo">
+                <option>Livro</option>
+                <option>Passeio</option>
+                <option>Visita técnica</option>
+                <option>Aula ou palestra</option>
+                <option>Outro</option>
+              </select>
+            </label>
 
-            <div class="campo">
-              <label class="rotulo" for="ideia">Qual é a sua ideia?</label>
-              <input id="ideia" name="ideia" type="text" maxlength="120" required placeholder="Ex.: visita a uma empresa de software">
-            </div>
+            <label for="ideia">Qual é a sua ideia?
+              <input id="ideia" type="text" maxlength="120" required placeholder="Ex.: visita a uma empresa de software">
+            </label>
 
-            <div class="campo">
-              <label class="rotulo" for="motivo">Por que seria legal?</label>
-              <textarea id="motivo" name="motivo" maxlength="600" placeholder="Explique com suas palavras."></textarea>
-            </div>
+            <label for="motivo">Por que seria legal?
+              <textarea id="motivo" maxlength="600" placeholder="Explique com suas palavras."></textarea>
+            </label>
 
-            <div class="linha-dupla">
-              <div class="campo">
-                <label class="rotulo" for="nome">Seu nome (opcional)</label>
-                <input id="nome" name="nome" type="text" maxlength="60" autocomplete="name">
-              </div>
-              <div class="campo">
-                <label class="rotulo" for="turma">Turma (opcional)</label>
-                <input id="turma" name="turma" type="text" maxlength="20" placeholder="Ex.: 1º A">
-              </div>
-            </div>
+            <label for="nome">Seu nome (opcional)
+              <input id="nome" type="text" maxlength="60" autocomplete="name">
+            </label>
 
-            <button class="btn" type="submit">Preparar sugestão</button>
+            <label for="turma">Turma (opcional)
+              <input id="turma" type="text" maxlength="20" placeholder="Ex.: 1º A">
+            </label>
+
+            <button class="botao" type="submit">Preparar sugestão</button>
             <p class="ajuda">Sua sugestão só é enviada quando você apertar em “Enviar por e-mail”.</p>
 
-            <div class="resultado" id="resultado" hidden>
+            <!-- Esta parte só aparece depois de apertar em "Preparar sugestão" -->
+            <div id="resultado" hidden>
               <h3 id="resultado-titulo" tabindex="-1">Sugestão preparada</h3>
               <p>Falta só um passo: envie pelo e-mail da escola ou copie o texto e entregue à coordenação.</p>
               <textarea id="resultado-texto" readonly aria-label="Texto da sugestão"></textarea>
-              <div class="resultado-botoes">
-                <a class="btn" id="btn-email" href="#" target="_blank" rel="noopener">Enviar por e-mail</a>
-                <button class="btn btn-contorno" type="button" id="btn-copiar">Copiar texto</button>
+              <div class="botoes">
+                <a class="botao" id="botao-email" href="#" target="_blank" rel="noopener">Enviar por e-mail</a>
+                <button class="botao botao-contorno" type="button" id="botao-copiar">Copiar texto</button>
               </div>
-              <p class="resultado-msg" id="resultado-msg" role="status" aria-live="polite"></p>
+              <p id="resultado-msg" role="status"></p>
             </div>
           </form>
         </div>
       </div>
     </section>
+
   </main>
 
-  <footer class="rodape">
-    <div class="rodape-in">
+  <!-- ================= RODAPÉ ================= -->
+  <footer>
+    <div class="rodape">
       <div>
         <strong>Fala Aluno</strong>
         <p>Escola Estadual Apparecida Rahal. Feito pelos alunos, para os alunos.</p>
       </div>
-      <a href="#topo">Voltar ao topo</a>
+      <p><a href="#topo">Voltar ao topo</a> · <a href="admin.html">Área do administrador</a></p>
     </div>
   </footer>
 
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="config.js"></script>
+  <script src="exemplos.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

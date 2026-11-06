@@ -1,136 +1,201 @@
-const EMAIL_DA_ESCOLA = "sugestoes@exemplo.com";
-
-const AVISOS = [
-  {
-    categoria: "Provas",
-    titulo: "Semana de avaliações",
-    texto: "Confira o calendário com o professor de cada matéria e organize seus estudos com antecedência.",
-    data: "Data a definir",
-    exemplo: true
-  },
-  {
-    categoria: "Eventos",
-    titulo: "Feira de projetos da turma técnica",
-    texto: "Venha apresentar, ou conhecer, os sites e aplicativos criados pela turma de Desenvolvimento de Sistemas.",
-    data: "Data a definir",
-    exemplo: true
-  },
-  {
-    categoria: "Geral",
-    titulo: "Biblioteca aberta no intervalo",
-    texto: "Passe por lá para pegar um livro emprestado ou estudar em um lugar tranquilo.",
-    data: "Todos os dias",
-    exemplo: true
-  },
-  {
-    categoria: "Técnico",
-    titulo: "Entrega do projeto de lógica",
-    texto: "Teste o seu programa antes de entregar e combine o prazo final com o professor.",
-    data: "Prazo a combinar",
-    exemplo: true
-  }
-];
-
-const AULAS = [
-  {
-    dia: "Segunda",
-    hora: "13h30",
-    titulo: "Reforço de Matemática",
-    descricao: "Tire dúvidas de equações e funções e treine com exercícios.",
-    local: "Local a confirmar",
-    exemplo: true
-  },
-  {
-    dia: "Terça",
-    hora: "13h30",
-    titulo: "Monitoria de lógica de programação",
-    descricao: "Pratique algoritmos e resolva desafios com a ajuda de colegas e professores.",
-    local: "Laboratório de informática",
-    exemplo: true
-  },
-  {
-    dia: "Quarta",
-    hora: "13h30",
-    titulo: "Redação e ENEM",
-    descricao: "Estrutura do texto, repertório e treino de redação.",
-    local: "Local a confirmar",
-    exemplo: true
-  },
-  {
-    dia: "Quinta",
-    hora: "13h30",
-    titulo: "Inglês para tecnologia",
-    descricao: "Vocabulário para entender tutoriais, documentações e mensagens de erro.",
-    local: "Local a confirmar",
-    exemplo: true
-  }
-];
-
-function esc(texto) {
-  const caixa = document.createElement("div");
-  caixa.textContent = texto == null ? "" : String(texto);
-  return caixa.innerHTML;
+function limpar(texto) {
+  return texto.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
-const COR_DA_CATEGORIA = { "Provas": "rosa", "Eventos": "amarelo", "Geral": "azul", "Técnico": "verde" };
+// Liga o site ao Firebase. Só existe "db" se o config.js estiver preenchido.
+const temFirebase = FIREBASE_CONFIG.apiKey !== "";
+let db = null;
+if (temFirebase) {
+  firebase.initializeApp(FIREBASE_CONFIG);
+  db = firebase.firestore();
+}
 
-function desenharMural() {
-  const lista = document.getElementById("mural-lista");
-  if (AVISOS.length === 0) {
-    lista.innerHTML = '<p class="vazio">Nenhum aviso por enquanto. Volte em breve!</p>';
+// Busca todos os documentos de uma coleção ("avisos" ou "aulas")
+// que estão com mostrar = true e devolve uma lista de fichas.
+async function buscarLista(colecao) {
+  const resposta = await db.collection(colecao).where("mostrar", "==", true).get();
+  return resposta.docs.map(function (doc) {
+    return doc.data();
+  });
+}
+
+// Avisos: os mais novos primeiro. Aulas: por dia da semana e depois por hora.
+const DIAS = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta"];
+
+function ordemDosAvisos(a, b) {
+  const x = a.criadoEm ? a.criadoEm.seconds : 0;
+  const y = b.criadoEm ? b.criadoEm.seconds : 0;
+  return y - x;
+}
+
+function ordemDasAulas(a, b) {
+  const porDia = DIAS.indexOf(a.dia) - DIAS.indexOf(b.dia);
+  return porDia !== 0 ? porDia : (a.hora || "").localeCompare(b.hora || "");
+}
+
+
+// ---------- PARTE 2: MOSTRAR NA PÁGINA ----------
+
+// Cada categoria de aviso tem uma cor de papelzinho
+const CORES = {
+  provas: "rosa",
+  eventos: "amarelo",
+  geral: "azul",
+  tecnico: "verde"
+};
+
+// Cria um elemento HTML com uma classe e um texto.
+// Usamos textContent (e não innerHTML) para que símbolos como < e >
+// apareçam como texto e não quebrem a página.
+function criar(tag, classe, texto) {
+  const elemento = document.createElement(tag);
+  if (classe) {
+    elemento.className = classe;
+  }
+  if (texto) {
+    elemento.textContent = texto;
+  }
+  return elemento;
+}
+
+function mostrarErro(idDaCaixa, mensagem) {
+  const caixa = document.getElementById(idDaCaixa);
+  caixa.innerHTML = "";
+  caixa.appendChild(criar("p", "erro", mensagem));
+}
+
+function mostrarAvisos(lista, ehExemplo) {
+  const caixa = document.getElementById("lista-avisos");
+  caixa.innerHTML = ""; // apaga o "Carregando..."
+
+  if (lista.length === 0) {
+    caixa.appendChild(criar("p", "vazio", "Nenhum aviso por enquanto. Volte em breve!"));
     return;
   }
-  lista.innerHTML = AVISOS.map(function (a) {
-    const cor = COR_DA_CATEGORIA[a.categoria] || "azul";
-    return '<article class="aviso aviso-' + cor + '">' +
-      '<div class="aviso-etiquetas">' +
-        '<span class="etiqueta">' + esc(a.categoria) + '</span>' +
-        (a.exemplo ? '<span class="etiqueta etiqueta-exemplo">exemplo</span>' : '') +
-      '</div>' +
-      '<h3>' + esc(a.titulo) + '</h3>' +
-      '<p>' + esc(a.texto) + '</p>' +
-      '<p class="aviso-data">' + esc(a.data) + '</p>' +
-    '</article>';
-  }).join("");
+
+  for (let i = 0; i < lista.length; i++) {
+    const aviso = lista[i];
+    const cor = CORES[limpar(aviso.categoria || "")] || "azul";
+
+    const cartao = criar("article", "aviso aviso-" + cor);
+
+    const etiquetas = criar("div", "etiquetas");
+    if (aviso.categoria) {
+      etiquetas.appendChild(criar("span", "etiqueta", aviso.categoria));
+    }
+    if (ehExemplo) {
+      etiquetas.appendChild(criar("span", "etiqueta exemplo", "exemplo"));
+    }
+    cartao.appendChild(etiquetas);
+
+    cartao.appendChild(criar("h3", "", aviso.titulo));
+    if (aviso.texto) {
+      cartao.appendChild(criar("p", "", aviso.texto));
+    }
+    if (aviso.data) {
+      cartao.appendChild(criar("p", "data", aviso.data));
+    }
+
+    caixa.appendChild(cartao);
+  }
 }
 
-function desenharAulas() {
-  const lista = document.getElementById("aulas-lista");
-  if (AULAS.length === 0) {
-    lista.innerHTML = '<li><p class="vazio">Ainda não há aulas complementares marcadas. Volte em breve!</p></li>';
+function mostrarAulas(lista, ehExemplo) {
+  const caixa = document.getElementById("lista-aulas");
+  caixa.innerHTML = "";
+
+  if (lista.length === 0) {
+    const item = criar("li");
+    item.appendChild(criar("p", "vazio", "Ainda não há aulas complementares marcadas. Volte em breve!"));
+    caixa.appendChild(item);
     return;
   }
-  lista.innerHTML = AULAS.map(function (a) {
-    return '<li>' +
-      '<div class="quando"><strong>' + esc(a.dia) + '</strong><span>' + esc(a.hora) + '</span></div>' +
-      '<div>' +
-        '<h3>' + esc(a.titulo) + (a.exemplo ? ' <span class="etiqueta etiqueta-exemplo">exemplo</span>' : '') + '</h3>' +
-        '<p>' + esc(a.descricao) + '</p>' +
-        '<p class="onde">Onde: ' + esc(a.local) + '</p>' +
-      '</div>' +
-    '</li>';
-  }).join("");
+
+  for (let i = 0; i < lista.length; i++) {
+    const aula = lista[i];
+    const item = criar("li");
+
+    // lado esquerdo: dia e horário
+    const quando = criar("div", "quando");
+    quando.appendChild(criar("strong", "", aula.dia));
+    quando.appendChild(criar("span", "", aula.hora));
+    item.appendChild(quando);
+
+    // lado direito: título, descrição e local
+    const detalhes = criar("div", "detalhes");
+    const titulo = criar("h3", "", aula.titulo);
+    if (ehExemplo) {
+      titulo.appendChild(criar("span", "etiqueta exemplo", "exemplo"));
+    }
+    detalhes.appendChild(titulo);
+    if (aula.descricao) {
+      detalhes.appendChild(criar("p", "", aula.descricao));
+    }
+    if (aula.local) {
+      detalhes.appendChild(criar("p", "onde", "Onde: " + aula.local));
+    }
+    item.appendChild(detalhes);
+
+    caixa.appendChild(item);
+  }
 }
 
-function iniciarFormulario() {
-  const form = document.getElementById("form-sugestao");
+// Se o Firebase está configurado, busca nele. Se não, usa os exemplos.
+async function carregarAvisos() {
+  if (!temFirebase) {
+    mostrarAvisos(EXEMPLO_AVISOS, true);
+    return;
+  }
+  try {
+    const lista = await buscarLista("avisos");
+    lista.sort(ordemDosAvisos);
+    mostrarAvisos(lista, false);
+  } catch (erro) {
+    console.error(erro);
+    mostrarErro("lista-avisos", "Não foi possível carregar os avisos agora. Tente de novo mais tarde.");
+  }
+}
+
+async function carregarAulas() {
+  if (!temFirebase) {
+    mostrarAulas(EXEMPLO_AULAS, true);
+    return;
+  }
+  try {
+    const lista = await buscarLista("aulas");
+    lista.sort(ordemDasAulas);
+    mostrarAulas(lista, false);
+  } catch (erro) {
+    console.error(erro);
+    mostrarErro("lista-aulas", "Não foi possível carregar as aulas agora. Tente de novo mais tarde.");
+  }
+}
+
+
+// ---------- PARTE 3: FORMULÁRIO DE SUGESTÕES ----------
+
+// O site não tem servidor para guardar mensagens. Por isso, ao enviar,
+// ele monta o texto da sugestão e deixa pronto para mandar por e-mail
+// ou para copiar.
+function configurarFormulario() {
+  const formulario = document.getElementById("form-sugestao");
   const resultado = document.getElementById("resultado");
   const titulo = document.getElementById("resultado-titulo");
-  const texto = document.getElementById("resultado-texto");
-  const botaoEmail = document.getElementById("btn-email");
-  const botaoCopiar = document.getElementById("btn-copiar");
+  const caixaDeTexto = document.getElementById("resultado-texto");
+  const botaoEmail = document.getElementById("botao-email");
+  const botaoCopiar = document.getElementById("botao-copiar");
   const mensagem = document.getElementById("resultado-msg");
 
-  form.addEventListener("submit", function (evento) {
-    evento.preventDefault();
+  formulario.addEventListener("submit", function (evento) {
+    evento.preventDefault(); // não deixa a página recarregar
 
-    const tipo = form.tipo.value;
-    const ideia = form.ideia.value.trim();
-    const motivo = form.motivo.value.trim() || "(não informado)";
-    const nome = form.nome.value.trim() || "(não informado)";
-    const turma = form.turma.value.trim() || "(não informado)";
+    const tipo = document.getElementById("tipo").value;
+    const ideia = document.getElementById("ideia").value.trim();
+    const motivo = document.getElementById("motivo").value.trim() || "(não informado)";
+    const nome = document.getElementById("nome").value.trim() || "(não informado)";
+    const turma = document.getElementById("turma").value.trim() || "(não informado)";
 
-    const corpo =
+    const texto =
       "Sugestão para o Fala Aluno\n\n" +
       "Tipo: " + tipo + "\n" +
       "Ideia: " + ideia + "\n" +
@@ -138,10 +203,13 @@ function iniciarFormulario() {
       "Nome: " + nome + "\n" +
       "Turma: " + turma;
 
-    texto.value = corpo;
-    botaoEmail.href = "mailto:" + EMAIL_DA_ESCOLA +
-      "?subject=" + encodeURIComponent("Sugestão (" + tipo + ") - Fala Aluno") +
-      "&body=" + encodeURIComponent(corpo);
+    const assunto = "Sugestão (" + tipo + ") - Fala Aluno";
+
+    caixaDeTexto.value = texto;
+    botaoEmail.href =
+      "mailto:" + EMAIL_DA_ESCOLA +
+      "?subject=" + encodeURIComponent(assunto) +
+      "&body=" + encodeURIComponent(texto);
 
     mensagem.textContent = "";
     resultado.hidden = false;
@@ -150,16 +218,19 @@ function iniciarFormulario() {
 
   botaoCopiar.addEventListener("click", async function () {
     try {
-      await navigator.clipboard.writeText(texto.value);
+      await navigator.clipboard.writeText(caixaDeTexto.value);
       mensagem.textContent = "Texto copiado!";
     } catch (erro) {
-      texto.focus();
-      texto.select();
-      mensagem.textContent = "Não foi possível copiar sozinho. O texto está selecionado: use Ctrl+C (ou toque e segure para copiar).";
+      caixaDeTexto.focus();
+      caixaDeTexto.select();
+      mensagem.textContent = "Não foi possível copiar sozinho. O texto está selecionado: use Ctrl+C.";
     }
   });
 }
 
-desenharMural();
-desenharAulas();
-iniciarFormulario();
+
+// ---------- COMEÇAR ----------
+// Quando a página abre, o site faz estas três coisas:
+carregarAvisos();
+carregarAulas();
+configurarFormulario();
