@@ -1,20 +1,8 @@
-// =====================================================
-// FALA ALUNO - admin.js
-//
-// Controla a área do administrador:
-//   PARTE 1: login e logout (Firebase Authentication)
-//   PARTE 2: adicionar, editar, esconder e apagar (Firestore)
-//
-// Quem pode escrever é decidido pelas regras do Firestore
-// (veja o GUIA-DO-GRUPO.md), e não por este arquivo.
-// =====================================================
-
 const telaLogin = document.getElementById("tela-login");
 const telaPainel = document.getElementById("tela-painel");
 const erroLogin = document.getElementById("login-erro");
 const erroPainel = document.getElementById("painel-erro");
 
-// Cada coleção tem os seus campos e o texto que aparece na lista.
 const TIPOS = {
   avisos: {
     campos: ["categoria", "titulo", "texto", "data"],
@@ -40,9 +28,6 @@ function iniciar() {
   const auth = firebase.auth();
   const db = firebase.firestore();
 
-  // ---------- PARTE 1: LOGIN ----------
-
-  // O Firebase avisa sempre que alguém entra ou sai.
   auth.onAuthStateChanged(function (usuario) {
     telaLogin.hidden = usuario !== null;
     telaPainel.hidden = usuario === null;
@@ -71,8 +56,6 @@ function iniciar() {
     auth.signOut();
   });
 
-  // ---------- PARTE 2: AVISOS E AULAS ----------
-
   function criar(tag, classe, texto) {
     const e = document.createElement(tag);
     if (classe) { e.className = classe; }
@@ -85,7 +68,6 @@ function iniciar() {
     erroPainel.textContent = "Não foi possível concluir. Confira se você entrou com o e-mail de administrador.";
   }
 
-  // Desenha a lista de uma coleção, com os botões de cada item.
   async function carregarLista(colecao) {
     const caixa = document.getElementById("lista-admin-" + colecao);
     try {
@@ -142,7 +124,6 @@ function iniciar() {
     form.querySelector("[data-cancelar]").hidden = true;
   }
 
-  // Liga os dois formulários (avisos e aulas) com o mesmo código.
   Object.keys(TIPOS).forEach(function (colecao) {
     const form = document.getElementById("form-" + colecao);
 

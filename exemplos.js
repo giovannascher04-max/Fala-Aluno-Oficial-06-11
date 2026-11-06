@@ -1,11 +1,3 @@
-// =====================================================
-// DADOS DE EXEMPLO
-// O site usa estes avisos e aulas só quando o
-// Firebase ainda não foi configurado no arquivo config.js.
-// Os nomes (categoria, titulo...) são iguais aos campos
-// guardados no Firestore.
-// =====================================================
-
 const EXEMPLO_AVISOS = [
   {
     categoria: "Provas",
